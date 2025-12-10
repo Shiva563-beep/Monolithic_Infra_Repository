@@ -1,0 +1,52 @@
+trigger:
+ branches:
+  include:
+  - frature/*
+  - main
+
+pool: Azure Pipelines
+
+stages:
+- stage: Build_Stage
+  displayName: Terraform  init to plan
+  jobs:
+  - job: Terraforminit
+    displayName: Terraform Init
+    steps:
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
+
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        backendServiceArm: 'workload'
+        backendAzureRmResourceGroupName: 'rg-shiva'
+        backendAzureRmStorageAccountName: 'storage7118'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'terraformtfstate'
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        environmentServiceNameAzureRM: 'workload'
+- stage: scaning_stage
+  jobs:
+  - job: scanning_stage
+    steps:
+    - task: tfsec@1
+      inputs:
+        version: 'v1.26.0'
+        args: 'tfsec .'
+        dir: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+
+    
+    
