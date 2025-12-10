@@ -21,7 +21,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/toduapps'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
         backendServiceArm: 'workload'
         backendAzureRmResourceGroupName: 'rg-shiva'
         backendAzureRmStorageAccountName: 'storage7118'
@@ -31,16 +31,22 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'validate'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/toduapps'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
     - task: TerraformTask@5
       inputs:
         provider: 'azurerm'
         command: 'plan'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/toduapps'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
         environmentServiceNameAzureRM: 'workload'
-- stage: scaning stage
+- stage: scaning_stage
   jobs:
   - job: scanning_stage
     steps:
+    - task: tfsec@1
+      inputs:
+        version: 'v1.26.0'
+        args: 'tfsec .'
+        dir: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+
     
     
