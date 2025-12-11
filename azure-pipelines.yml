@@ -1,14 +1,14 @@
 trigger:
- branches:
-  include:
-  - frature/*
-  - main
+  branches:
+    include:
+      - frature/*
+      - main
 
 pool: infra_pool
 
 stages:
 - stage: Build_Stage
-  displayName: Terraform  init to plan
+  displayName: Terraform init to plan
   jobs:
   - job: Terraforminit
     displayName: Terraform Init
@@ -27,18 +27,22 @@ stages:
         backendAzureRmStorageAccountName: 'storage7118'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'terraformtfstate'
+        environmentServiceNameAzureRM: 'workload'   # 👈 Added (required)
+
     - task: TerraformTask@5
       inputs:
         provider: 'azurerm'
         command: 'validate'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        environmentServiceNameAzureRM: 'workload'   # 👈 Added (required)
+
     - task: TerraformTask@5
       inputs:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
         environmentServiceNameAzureRM: 'workload'
-      
+
 - stage: scaning_stage
   jobs:
   - job: scanning_stage
@@ -48,6 +52,3 @@ stages:
         version: 'v1.26.0'
         args: 'tfsec .'
         dir: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
-
-    
-    
