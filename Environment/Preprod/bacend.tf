@@ -1,0 +1,8 @@
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "shiva-rg"
+    storage_account_name = "shivastg7118"
+    container_name       = "file"
+    key                  = "terraformtfstate"
+  }
+}
