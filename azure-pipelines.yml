@@ -52,6 +52,7 @@ stages:
   - job: scanning_stage
     steps:
     - task: tfsec@1
+      displayName: Scanning
       inputs:
         version: 'v1.26.0'
         args: 'tfsec .'
