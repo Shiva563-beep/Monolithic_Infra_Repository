@@ -24,6 +24,7 @@ stages:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        environmentServiceNameAzureRM: 'workeload_federation'
         backendServiceArm: 'workeload_federation'
         backendAzureRmOverrideSubscriptionID: '0fed9206-7606-41d6-bea8-83033d2b432f'
         backendAzureRmResourceGroupName: 'shiva-rg'
@@ -38,6 +39,7 @@ stages:
         provider: 'azurerm'
         command: 'validate'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        environmentServiceNameAzureRM: 'workeload_federation'
        
 
     - task: TerraformTask@5
