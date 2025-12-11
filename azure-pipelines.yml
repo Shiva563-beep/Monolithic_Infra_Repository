@@ -4,7 +4,7 @@ trigger:
   - frature/*
   - main
 
-pool: Default
+pool: infra_pool
 
 stages:
 - stage: Build_Stage
