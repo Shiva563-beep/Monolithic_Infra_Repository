@@ -14,15 +14,18 @@ stages:
     displayName: Terraform Init
     steps:
     - task: TerraformInstaller@1
+      displayName: Terraform installation
       inputs:
         terraformVersion: 'latest'
 
     - task: TerraformTask@5
+      displayName: Terraform Init
       inputs:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
         backendServiceArm: 'workeload_federation'
+        backendAzureRmOverrideSubscriptionID: '0fed9206-7606-41d6-bea8-83033d2b432f'
         backendAzureRmResourceGroupName: 'shiva-rg'
         backendAzureRmStorageAccountName: 'shivastg7118'
         backendAzureRmContainerName: 'file'
@@ -30,6 +33,7 @@ stages:
        
 
     - task: TerraformTask@5
+      displayName: Terraform validate
       inputs:
         provider: 'azurerm'
         command: 'validate'
@@ -37,6 +41,7 @@ stages:
        
 
     - task: TerraformTask@5
+      displayName: Terraform plan
       inputs:
         provider: 'azurerm'
         command: 'plan'
