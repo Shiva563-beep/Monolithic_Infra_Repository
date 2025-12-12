@@ -14,34 +14,38 @@ stages:
     displayName: Terraform Init
     steps:
     - task: TerraformInstaller@1
+      displayName: Terraform installation
       inputs:
         terraformVersion: 'latest'
 
     - task: TerraformTask@5
+      displayName: Terraform Init
       inputs:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
-        backendServiceArm: 'workload'
-        backendAzureRmResourceGroupName: 'rg-shiva'
-        backendAzureRmStorageAccountName: 'storage7118'
-        backendAzureRmContainerName: 'tfstate'
+        backendServiceArm: 'workeload_federation'
+        backendAzureRmResourceGroupName: 'shiva-rg'
+        backendAzureRmStorageAccountName: 'shivastg7118'
+        backendAzureRmContainerName: 'file'
         backendAzureRmKey: 'terraformtfstate'
-        environmentServiceNameAzureRM: 'workload'   # 👈 Added (required)
+        environmentServiceNameAzureRM: 'workeload_federation'   # 👈 Added (required)
 
     - task: TerraformTask@5
+      displayName: Terraform validate
       inputs:
         provider: 'azurerm'
         command: 'validate'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
-        environmentServiceNameAzureRM: 'workload'   # 👈 Added (required)
+        
 
     - task: TerraformTask@5
+      displayName: Terraform Plan
       inputs:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
-        environmentServiceNameAzureRM: 'workload'
+        environmentServiceNameAzureRM: 'workeload_federation'
 
 - stage: scaning_stage
   jobs:
