@@ -1,6 +1,7 @@
 trigger:
   branches:
     include:
+      - feature/terraform-infra
       - frature/*
       - main
 
