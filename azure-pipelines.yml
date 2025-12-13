@@ -55,4 +55,4 @@ stages:
       inputs:
         version: 'v1.26.0'
         args: 'tfsec .'
-        dir: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        dir: 'Environment/Preprod'
