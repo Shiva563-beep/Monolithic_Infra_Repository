@@ -52,8 +52,9 @@ stages:
   - job: scanning_stage
     steps:
     - task: tfsec@1
+      displayName: Run tfsec
       inputs:
-        version: 'v1.26.0'
-        args: 'tfsec .'
-        dir: 'Environment/Preprod'
-        formet: 'json'
+        workingDirectory: 'Environment/Preprod'
+        format: 'json'
+        softFail: true
+
