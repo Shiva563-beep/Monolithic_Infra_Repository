@@ -56,3 +56,4 @@ stages:
         version: 'v1.26.0'
         args: 'tfsec .'
         dir: 'Environment/Preprod'
+        formet: 'json'
