@@ -17,6 +17,7 @@ variable "stgs" {
     location                 = string
     account_tier             = string
     account_replication_type = string
+    public_network_access_enabled = optional(bool)
 
     tags = optional(map(string))
 
