@@ -1,12 +1,22 @@
 trigger:
   branches:
     include:
-      - frature/*
+      - feature/*
       - main
 
 pool: infra_pool
 
 stages:
+- stage: scaning_stage
+  jobs:
+  - job: scanning_stage
+    steps:
+    - task: tfsec@1
+      displayName: Run tfsec
+      inputs:
+        version: 'v1.26.0'
+        publishTestResults: false
+
 - stage: Build_Stage
   displayName: Terraform init to plan
   jobs:
@@ -47,13 +57,4 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
         environmentServiceNameAzureRM: 'workeload_federation'
 
-- stage: scaning_stage
-  jobs:
-  - job: scanning_stage
-    steps:
-    - task: tfsec@1
-      displayName: Run tfsec
-      inputs:
-        workingDirectory: 'Environment/Preprod'
-        format: 'json'
-        softFail: true
+
