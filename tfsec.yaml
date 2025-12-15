@@ -52,4 +52,30 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
         environmentServiceNameAzureRM: 'workeload_federation'
 
+- stage: Manual_validation
+  pool: server
+  jobs:
+   - job: Manual_validation
+     steps:
+     - task: ManualValidation@1
+       inputs:
+         notifyUsers: 'shivanand1801@gmail.com'
+         approvers: 'shivanand1801@gmail.com'
+
+- stage: Terraform_apply
+  jobs:
+   - job: Terraform_apply
+     steps:
+     - task: TerraformTask@5
+       inputs:
+         provider: 'azurerm'
+         command: 'apply'
+         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+         environmentServiceNameAzureRM: 'workeload_federation'
+
+     
+     
+
+
+
 
