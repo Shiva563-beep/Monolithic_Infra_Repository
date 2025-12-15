@@ -79,6 +79,19 @@ stages:
   - job: TerraformApply
     steps:
     - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        backendAzureRmUseEntraIdForAuthentication: false
+        backendServiceArm: 'workeload_federation'
+        backendAzureRmResourceGroupName: 'shiva-rg'
+        backendAzureRmStorageAccountName: 'shivastg7118'
+        backendAzureRmContainerName: 'file'
+        backendAzureRmKey: 'terraformtfstate'
+        environmentServiceNameAzureRM: 'workeload_federation'
+
+    - task: TerraformTask@5
       displayName: Terraform Apply
       inputs:
         provider: 'azurerm'
