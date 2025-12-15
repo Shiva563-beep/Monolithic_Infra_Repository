@@ -2,6 +2,16 @@ trigger: none
 
 pool: infra_pool
 
+parameters: 
+- name: Environment
+  displayName: Environment
+  type: string
+  default: preprod
+  values: 
+  - preprod
+  - prod
+
+
 stages:
 # ---------------- TFSEC SCAN ----------------
 - stage: Scanning_Stage
