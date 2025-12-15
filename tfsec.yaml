@@ -3,20 +3,23 @@ trigger: none
 pool: infra_pool
 
 stages:
-- stage: scaning_stage
+# ---------------- TFSEC SCAN ----------------
+- stage: Scanning_Stage
+  displayName: TFSEC Scan
   jobs:
-  - job: scanning_stage
+  - job: tfsec_scan
     steps:
     - task: tfsec@1
       displayName: Run tfsec
       inputs:
         version: 'v1.26.0'
 
+# ---------------- TERRAFORM INIT / PLAN ----------------
 - stage: Build_Stage
-  displayName: Terraform init to plan
+  displayName: Terraform Init & Plan
+  dependsOn: Scanning_Stage
   jobs:
-  - job: Terraforminit
-    displayName: Terraform Init
+  - job: TerraformInitPlan
     steps:
     - task: TerraformInstaller@1
       displayName: Terraform installation
@@ -34,15 +37,14 @@ stages:
         backendAzureRmStorageAccountName: 'shivastg7118'
         backendAzureRmContainerName: 'file'
         backendAzureRmKey: 'terraformtfstate'
-        environmentServiceNameAzureRM: 'workeload_federation'   # 👈 Added (required)
+        environmentServiceNameAzureRM: 'workeload_federation'
 
     - task: TerraformTask@5
-      displayName: Terraform validate
+      displayName: Terraform Validate
       inputs:
         provider: 'azurerm'
         command: 'validate'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
-        
 
     - task: TerraformTask@5
       displayName: Terraform Plan
@@ -52,30 +54,34 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
         environmentServiceNameAzureRM: 'workeload_federation'
 
-- stage: Manual_validation
+# ---------------- MANUAL VALIDATION ----------------
+- stage: Manual_Validation
+  displayName: Manual Approval Before Apply
+  dependsOn: Build_Stage
   pool: server
   jobs:
-   - job: Manual_validation
-     steps:
-     - task: ManualValidation@1
-       inputs:
-         notifyUsers: 'shivanandsinghec@gmail.com'
-         approvers: 'shivanandsinghec@gmail.com'
+  - job: ManualApproval
+    steps:
+    - task: ManualValidation@0
+      inputs:
+        notifyUsers: |
+          shivanandsinghec@gmail.com
+        instructions: |
+          Please review Terraform plan and approve to continue.
+        onTimeout: reject
+      timeoutInMinutes: 1440   # 24 hours
 
-- stage: Terraform_apply
+# ---------------- TERRAFORM APPLY ----------------
+- stage: Terraform_Apply
+  displayName: Terraform Apply
+  dependsOn: Manual_Validation
   jobs:
-   - job: Terraform_apply
-     steps:
-     - task: TerraformTask@5
-       inputs:
-         provider: 'azurerm'
-         command: 'apply'
-         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
-         environmentServiceNameAzureRM: 'workeload_federation'
-
-     
-     
-
-
-
-
+  - job: TerraformApply
+    steps:
+    - task: TerraformTask@5
+      displayName: Terraform Apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        environmentServiceNameAzureRM: 'workeload_federation'
