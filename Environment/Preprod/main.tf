@@ -11,3 +11,11 @@ module "stgs_name" {
   stgs   = var.stgs
 
 }
+
+module "virtual_network" {
+  depends_on = [module.rg_name]
+
+  source = "../../Virtual_network"
+  vnets = var.vnets
+
+}
