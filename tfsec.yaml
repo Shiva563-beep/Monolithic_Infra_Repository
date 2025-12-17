@@ -2,6 +2,16 @@ trigger: none
 
 pool: infra_pool
 
+parameters: 
+- name: Environment
+  displayName: Environment
+  type: string
+  default: preprod
+  values: 
+  - preprod
+  - prod
+
+
 stages:
 # ---------------- TFSEC SCAN ----------------
 - stage: Scanning_Stage
@@ -96,5 +106,12 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        environmentServiceNameAzureRM: 'workeload_federation'
+
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
         environmentServiceNameAzureRM: 'workeload_federation'
