@@ -15,7 +15,7 @@ module "stgs_name" {
 module "virtual_network" {
   depends_on = [module.rg_name]
 
-  source = "../../Virtual_network"
-  vnets = var.vnets
+  source = "../../Module/Virtual_network"
+  vnets  = var.vnets
 
 }
