@@ -11,6 +11,11 @@ parameters:
   - preprod
   - prod
 
+- name: RunDestroy
+  displayName: "Run Terraform Destroy?"
+  type: boolean
+  default: false
+
 
 stages:
 # ---------------- TFSEC SCAN ----------------
@@ -110,6 +115,8 @@ stages:
         environmentServiceNameAzureRM: 'workeload_federation'
 
     - task: TerraformTask@5
+      displayName: Terraform Destroy
+      condition: eq('${{ parameters.RunDestroy }}', true)
       inputs:
         provider: 'azurerm'
         command: 'destroy'
