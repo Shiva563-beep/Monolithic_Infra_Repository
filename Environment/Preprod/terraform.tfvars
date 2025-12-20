@@ -1,11 +1,10 @@
 rg_name = {
   rg1 = {
     name      = "rg_shiva1"    #name of resource group
-    location  = "centralindia" #location where resource group will be created
-    manged_by = "terraform"    #who will manage this(by terraform/portel)
+    location  = "centralindia" #location where resource group will be created   
     tag = {
       env = "priprod"
-      manage_by = "terraform"
+      managed_by = "terraform"  #who will manage this(by terraform/portel)
     } #required tag
   }
 }
@@ -17,7 +16,7 @@ stgs = {
     location                 = "centralindia"
     account_tier             = "Standard"
     account_replication_type = "GRS"
-    public_network_access_enabled = "true"
+    public_network_access_enabled = true
 
     tags = {
       environment = "preprod"
@@ -32,16 +31,15 @@ vnets = {
     location            = "centralindia"
     resource_group_name = "rg_shiva1"
     address_space       = ["10.0.0.0/16"]
-    subnets = {
-      subnet1 = {
+    subnets = [
+      {
         name             = "frontend-subnet"
-        address_prefixes = ["10.0.1.0/24"]
-      }
-      subnet2 = {
+        address_prefixes = ["10.0.1.0/24"] 
+      },
+
+      {
         name             = "bacend-subnet"
         address_prefixes = ["10.0.2.0/24"]
-      }
+      }]
     }
-
   }
-}
