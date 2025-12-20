@@ -13,6 +13,8 @@
   }
 
   module "vnet" {
+    depends_on = [module.rg_name]
+    
     source = "../../Module/Virtual_network"
     vnets = var.vnets
   }
