@@ -18,3 +18,18 @@
     source = "../../Module/Virtual_network"
     vnets = var.vnets
   }
+
+  module "pip" {
+
+    source = "../../Module/Public_ip"
+    pips= var.pips
+  }
+
+  
+  
+  module "vm" {
+    depends_on = [module.rg_name, module.pip]
+
+    source = "../../Module/Virtual_machine"
+    vms= var.vms
+  }
