@@ -46,7 +46,7 @@ vnets = {
 
 pips = {
   pip1 = {
-    ip_name             = "frontend_pip"
+    pip_name             = "frontend_pip"
     resource_group_name = "rg_shiva1"
     location            = "centralindia"
     allocation_method   = "Dynamic"
