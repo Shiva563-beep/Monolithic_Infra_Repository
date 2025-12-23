@@ -84,6 +84,8 @@ vms = {
     resource_group_name  = "rg_shiva1"
     location             = "centralindia"
     size                 = "Standard_D2s_v3"
+
+    
     admin_username       = "Aaaaaa12345"
     admin_password       = "Aaaaaa@12345"
     

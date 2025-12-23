@@ -14,7 +14,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   
   admin_password = each.value.admin_password
   network_interface_ids = [
-    module.nic.nick[each.value.nic_key].id,
+    data.azurerm_network_interface.nic_data[each.key].id,
   ]
 
   os_disk {
@@ -29,3 +29,5 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = each.value.version
   }
 }
+
+

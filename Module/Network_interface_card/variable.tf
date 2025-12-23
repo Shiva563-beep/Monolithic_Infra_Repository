@@ -11,7 +11,7 @@ variable "nicks" {
 
     # Subnet / VNet (data source)
     subnet_name     = string
-    vnet_name       = string
+    virtual_network_name      = string
     
     }))
 }

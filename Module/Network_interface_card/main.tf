@@ -18,7 +18,7 @@ resource "azurerm_network_interface" "nick" {
   for_each=var.nicks
   name                = each.value.nic_name
   location            = each.value.location
-  resource_group_name = each.valu.resource_group_name
+  resource_group_name = each.value.resource_group_name
 
   ip_configuration {
     name      = "internal"
@@ -28,3 +28,4 @@ resource "azurerm_network_interface" "nick" {
     private_ip_address_allocation = "Dynamic"
   }
 }
+

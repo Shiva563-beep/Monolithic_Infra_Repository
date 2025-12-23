@@ -32,8 +32,9 @@
   }
   
   module "vm" {
-    depends_on = [module.rg_name, module.pip]
+    depends_on = [module.rg_name, module.nic]
 
     source = "../../Module/Virtual_machine"
     vms= var.vms
+    
   }
