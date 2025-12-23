@@ -70,7 +70,7 @@ nicks = {
 
     # Subnet / VNet (data source)
     subnet_name = "frontend-subnet"
-    vnet_name   = "infra-vnet"
+    virtual_network_name  = "infra-vnet"
 
 
 

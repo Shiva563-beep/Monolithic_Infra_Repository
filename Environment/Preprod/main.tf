@@ -28,7 +28,8 @@
   module "nic" {
 
     source="../../Module/Network_interface_card"
-    nicks=var.nicks
+    nicks= var.nicks
+
   }
   
   module "vm" {
