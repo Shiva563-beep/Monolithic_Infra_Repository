@@ -1,0 +1,124 @@
+trigger: none
+
+pool: Todu-Agent
+
+parameters: 
+- name: Environment
+  displayName: Environment
+  type: string
+  default: preprod
+  values: 
+  - preprod
+  - prod
+
+- name: RunDestroy
+  displayName: "Run Terraform Destroy?"
+  type: boolean
+  default: false
+
+
+stages:
+# ---------------- TFSEC SCAN ----------------
+- stage: Scanning_Stage
+  displayName: TFSEC Scan
+  jobs:
+  - job: tfsec_scan
+    steps:
+    - task: tfsec@1
+      displayName: Run tfsec
+      inputs:
+        version: 'v1.26.0'
+
+# ---------------- TERRAFORM INIT / PLAN ----------------
+- stage: Build_Stage
+  displayName: Terraform Init & Plan
+  dependsOn: Scanning_Stage
+  jobs:
+  - job: TerraformInitPlan
+    steps:
+    - task: TerraformInstaller@1
+      displayName: Terraform installation
+      inputs:
+        terraformVersion: 'latest'
+
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        backendServiceArm: 'Todu_service_connection'
+        backendAzureRmResourceGroupName: 'shiva-rg'
+        backendAzureRmStorageAccountName: 'shivastg47118'
+        backendAzureRmContainerName: 'file'
+        backendAzureRmKey: 'terraformtfstate'
+        environmentServiceNameAzureRM: 'Todu_service_connection'
+
+    - task: TerraformTask@5
+      displayName: Terraform Validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+
+    - task: TerraformTask@5
+      displayName: Terraform Plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        environmentServiceNameAzureRM: 'Todu_service_connection'
+
+# ---------------- MANUAL VALIDATION ----------------
+- stage: Manual_Validation
+  displayName: Manual Approval Before Apply
+  dependsOn: Build_Stage
+  pool: server
+  jobs:
+  - job: ManualApproval
+    steps:
+    - task: ManualValidation@0
+      inputs:
+        notifyUsers: |
+          shivanandsinghec@gmail.com
+        instructions: |
+          Please review Terraform plan and approve to continue.
+        onTimeout: reject
+      timeoutInMinutes: 1440   # 24 hours
+
+# ---------------- TERRAFORM APPLY ----------------
+- stage: Terraform_Apply
+  displayName: Terraform Apply
+  dependsOn: Manual_Validation
+  jobs:
+  - job: TerraformApply
+    steps:
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        backendAzureRmUseEntraIdForAuthentication: false
+        backendServiceArm: 'Todu_service_connection'
+        backendAzureRmResourceGroupName: 'shiva-rg'
+        backendAzureRmStorageAccountName: 'shivastg47118'
+        backendAzureRmContainerName: 'file'
+        backendAzureRmKey: 'terraformtfstate'
+        environmentServiceNameAzureRM: 'Todu_service_connection'
+
+    - task: TerraformTask@5
+      displayName: Terraform Apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        environmentServiceNameAzureRM: 'Todu_service_connection'
+
+    - task: TerraformTask@5
+      displayName: Terraform Destroy
+      condition: eq('${{ parameters.RunDestroy }}', true)
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
+        environmentServiceNameAzureRM: 'Todu_service_connection'
