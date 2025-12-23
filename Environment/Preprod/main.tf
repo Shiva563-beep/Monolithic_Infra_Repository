@@ -25,7 +25,11 @@
     pips= var.pips
   }
 
-  
+  module "nic" {
+
+    source="../../Module/Network_interface_card"
+    nicks=var.nicks
+  }
   
   module "vm" {
     depends_on = [module.rg_name, module.pip]
