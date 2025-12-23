@@ -1,6 +1,6 @@
 trigger: none
 
-pool: Todu-Agent
+pool: Todu_Agent
 
 parameters: 
 - name: Environment
