@@ -11,7 +11,7 @@ rg_name = {
 
 stgs = {
   stgs1 = {
-    name                          = "stgshiva1"
+    name                          = "stgshiva112"
     resource_group_name           = "rg_shiva1"
     location                      = "centralindia"
     account_tier                  = "Standard"
@@ -46,10 +46,10 @@ vnets = {
 
 pips = {
   pip1 = {
-    pip_name             = "frontend_pip"
+    pip_name            = "frontend_pip"
     resource_group_name = "rg_shiva1"
     location            = "centralindia"
-    allocation_method   = "Dynamic"
+    allocation_method   = "Static"
 
     tags = {
       env        = "priprod"
@@ -69,8 +69,8 @@ nicks = {
 
 
     # Subnet / VNet (data source)
-    subnet_name = "frontend-subnet"
-    virtual_network_name  = "infra-vnet"
+    subnet_name          = "frontend-subnet"
+    virtual_network_name = "infra-vnet"
 
 
 
@@ -79,16 +79,19 @@ nicks = {
 
 vms = {
   vm1 = {
-    
-    vm_name              = "frontend_vm"
-    resource_group_name  = "rg_shiva1"
-    location             = "centralindia"
-    size                 = "Standard_D2s_v3"
 
+    vm_name             = "frontend_vm"
+    resource_group_name = "rg_shiva1"
+    location            = "centralindia"
+    size                = "Standard_D2s_v3"
+    nic_name            = "frontend_nic"
     
-    admin_username       = "Aaaaaa12345"
-    admin_password       = "Aaaaaa@12345"
     
+
+
+    admin_username = "Aaaaaa12345"
+    admin_password = "Aaaaaa@12345"
+
     os_disk = {
       caching              = "ReadWrite"
       storage_account_type = "Standard_LRS"

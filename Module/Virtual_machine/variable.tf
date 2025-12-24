@@ -3,11 +3,13 @@ variable "vms" {
   type = map(object({
 
     # VM basic details
-    
+
     vm_name             = string
     resource_group_name = string
     location            = string
     size                = string
+    nic_name            = string
+
 
     # Admin credentials
     admin_username = string

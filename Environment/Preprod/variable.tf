@@ -64,7 +64,7 @@ variable "nicks" {
 
 
     # Subnet / VNet (data source)
-    subnet_name = string
+    subnet_name          = string
     virtual_network_name = string
 
   }))
@@ -74,11 +74,13 @@ variable "vms" {
   type = map(object({
 
     # VM basic details
-    
+
     vm_name             = string
     resource_group_name = string
     location            = string
     size                = string
+    nic_name            = string
+
 
     # Admin credentials
     admin_username = string
@@ -86,16 +88,16 @@ variable "vms" {
 
     # OS Disk
     os_disk = optional(object({
-      caching              = string
-      storage_account_type = string
+      caching              = optional(string, "ReadWrite")
+      storage_account_type = optional(string, "Standard_LRS")
     }))
 
     # Source Image
     source_image_reference = optional(object({
-      publisher = string
-      offer     = string
-      sku       = string
-      version   = string
+      publisher = optional(string, "Canonical")
+      offer     = optional(string, "0001-com-ubuntu-server-jammy")
+      sku       = optional(string, "22_04-lts")
+      version   = optional(string, "latest")
     }))
 
   }))

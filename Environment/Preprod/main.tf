@@ -20,12 +20,14 @@
   }
 
   module "pip" {
+    depends_on = [module.rg_name]
 
     source = "../../Module/Public_ip"
     pips= var.pips
   }
 
   module "nic" {
+    depends_on = [module.rg_name, module.vnet, module.pip]
 
     source="../../Module/Network_interface_card"
     nicks= var.nicks
