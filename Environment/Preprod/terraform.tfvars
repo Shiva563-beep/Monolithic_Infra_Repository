@@ -56,6 +56,17 @@ pips = {
       managed_by = "terraform"
     }
   }
+   pip2 = {
+    pip_name            = "Bacend_pip"
+    resource_group_name = "rg_shiva1"
+    location            = "centralindia"
+    allocation_method   = "Static"
+
+    tags = {
+      env        = "priprod"
+      managed_by = "terraform"
+    }
+  }
 }
 
 nicks = {
@@ -75,6 +86,22 @@ nicks = {
 
 
   }
+  nic2 = {
+    nic_name            = "Bacend_nic"
+    location            = "centralindia"
+    resource_group_name = "rg_shiva1"
+
+    # Public IP (data source)
+    pip_name = "Bacend_pip"
+
+
+    # Subnet / VNet (data source)
+    subnet_name          = "backend-subnet"
+    virtual_network_name = "infra-vnet"
+
+
+
+  }
 }
 
 vms = {
@@ -85,9 +112,31 @@ vms = {
     location            = "centralindia"
     size                = "Standard_D2s_v3"
     nic_name            = "frontend_nic"
-    
-    
 
+    admin_username = "Aaaaaa12345"
+    admin_password = "Aaaaaa@12345"
+
+    os_disk = {
+      caching              = "ReadWrite"
+      storage_account_type = "Standard_LRS"
+    }
+
+    source_image_reference = {
+      publisher = "Canonical"
+      offer     = "0001-com-ubuntu-server-jammy"
+      sku       = "22_04-lts"
+      version   = "latest"
+    }
+
+
+  }
+  vm2 = {
+
+    vm_name             = "Bacend_vm"
+    resource_group_name = "rg_shiva1"
+    location            = "centralindia"
+    size                = "Standard_D2s_v3"
+    nic_name            = "Bacend_nic"
 
     admin_username = "Aaaaaa12345"
     admin_password = "Aaaaaa@12345"
