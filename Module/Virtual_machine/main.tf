@@ -13,6 +13,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   location            = each.value.location
   size                = each.value.size
   admin_username      = each.value.admin_username
+  custom_data= base64encode(file(each.value.script_name))
 
 
   admin_password = each.value.admin_password

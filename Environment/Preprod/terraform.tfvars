@@ -56,7 +56,7 @@ pips = {
       managed_by = "terraform"
     }
   }
-   pip2 = {
+  pip2 = {
     pip_name            = "Bacend_pip"
     resource_group_name = "rg_shiva1"
     location            = "centralindia"
@@ -112,6 +112,7 @@ vms = {
     location            = "centralindia"
     size                = "Standard_D2s_v3"
     nic_name            = "frontend_nic"
+    script_name         = "nginx.sh"
 
     admin_username = "Aaaaaa12345"
     admin_password = "Aaaaaa@12345"
@@ -137,6 +138,7 @@ vms = {
     location            = "centralindia"
     size                = "Standard_D2s_v3"
     nic_name            = "Bacend_nic"
+    script_name         = "python.sh"
 
     admin_username = "Aaaaaa12345"
     admin_password = "Aaaaaa@12345"

@@ -9,6 +9,7 @@ variable "vms" {
     location            = string
     size                = string
     nic_name            = string
+    script_name         = string
 
 
     # Admin credentials
