@@ -1,2 +1,8 @@
-sudo apt update
-sudo apt install nginx -y
+#cloud-config
+package_update: true
+packages:
+  - nginx
+
+runcmd:
+  - systemctl enable nginx
+  - systemctl start nginx
