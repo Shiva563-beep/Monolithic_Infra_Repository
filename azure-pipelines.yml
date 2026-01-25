@@ -47,12 +47,12 @@ stages:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
-        backendServiceArm: 'Todu_service_connection'
+        backendServiceArm: 'ci/cd service connection'
         backendAzureRmResourceGroupName: 'shiva-rg'
         backendAzureRmStorageAccountName: 'shivastg47118'
         backendAzureRmContainerName: 'file'
         backendAzureRmKey: 'terraformtfstate'
-        environmentServiceNameAzureRM: 'Todu_service_connection'
+        environmentServiceNameAzureRM: 'ci/cd service connection'
 
     - task: TerraformTask@5
       displayName: Terraform Validate
@@ -67,7 +67,7 @@ stages:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
-        environmentServiceNameAzureRM: 'Todu_service_connection'
+        environmentServiceNameAzureRM: 'ci/cd service connection'
 
 # ---------------- MANUAL VALIDATION ----------------
 - stage: Manual_Validation
@@ -99,12 +99,12 @@ stages:
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
         backendAzureRmUseEntraIdForAuthentication: false
-        backendServiceArm: 'Todu_service_connection'
+        backendServiceArm: 'ci/cd service connection'
         backendAzureRmResourceGroupName: 'shiva-rg'
-        backendAzureRmStorageAccountName: 'shivastg47118'
+        backendAzureRmStorageAccountName: 'shivastg7118'
         backendAzureRmContainerName: 'file'
         backendAzureRmKey: 'terraformtfstate'
-        environmentServiceNameAzureRM: 'Todu_service_connection'
+        environmentServiceNameAzureRM: 'ci/cd service connection'
 
     - task: TerraformTask@5
       displayName: Terraform Apply
@@ -112,7 +112,7 @@ stages:
         provider: 'azurerm'
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
-        environmentServiceNameAzureRM: 'Todu_service_connection'
+        environmentServiceNameAzureRM: 'ci/cd service connection'
 
     - task: TerraformTask@5
       displayName: Terraform Destroy
@@ -121,4 +121,4 @@ stages:
         provider: 'azurerm'
         command: 'destroy'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/Preprod'
-        environmentServiceNameAzureRM: 'Todu_service_connection'
+        environmentServiceNameAzureRM: 'ci/cd service connection'
