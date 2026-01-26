@@ -11,7 +11,7 @@ rg_name = {
 
 stgs = {
   stgs1 = {
-    name                          = "stgshiva112"
+    name                          = "stgshiva1122"
     resource_group_name           = "rg_shiva1"
     location                      = "centralindia"
     account_tier                  = "Standard"
