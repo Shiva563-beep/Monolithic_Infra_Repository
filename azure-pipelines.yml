@@ -52,7 +52,6 @@ stages:
         backendAzureRmStorageAccountName: 'shivastg7118'
         backendAzureRmContainerName: 'file'
         backendAzureRmKey: 'terraformtfstate'
-        environmentServiceNameAzureRM: 'sp service connection'
 
     - task: TerraformTask@5
       displayName: Terraform Validate
@@ -79,11 +78,8 @@ stages:
     steps:
     - task: ManualValidation@0
       inputs:
-        notifyUsers: |
-          shivanandsinghec@gmail.com
-        instructions: |
-          Please review Terraform plan and approve to continue.
-        onTimeout: reject
+        notifyUsers: 'shivanandsinghec@gmail.com'
+        instructions: 'Please review Terraform plan and approve to continue.'
       timeoutInMinutes: 1440   # 24 hours
 
 # ---------------- TERRAFORM APPLY ----------------
