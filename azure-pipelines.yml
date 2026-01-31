@@ -24,7 +24,10 @@ stages:
   jobs:
   - job: tfsec_scan
     steps:
-    
+    - task: tfsec@1
+      inputs:
+        version: 'v1.26.0'
+        dir: '$(System.DefaultWoringDirectory)/Monolithic_Infra_Repository'
 
 # ---------------- TERRAFORM INIT / PLAN ----------------
 - stage: Build_Stage
@@ -33,10 +36,10 @@ stages:
   jobs:
   - job: TerraformInitPlan
     steps:
-    - task: tfsec@1
+    - task: TerraformInstaller@1
+      displayName: Terraform installation
       inputs:
-        version: 'v1.26.0'
-        dir: '$(System.DefaultWorkingDirectory)/Monolithic_Infra_Repository'
+        terraformVersion: 'latest'
 
     - task: TerraformTask@5
       displayName: Terraform Init
