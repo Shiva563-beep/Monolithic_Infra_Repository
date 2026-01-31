@@ -27,7 +27,7 @@ stages:
     - task: tfsec@1
       inputs:
         version: 'v1.26.0'
-        dir: '$(System.DefaultWoringDirectory)/Monolithic_Infra_Repository'
+        dir: '$(System.DefaultWorkingDirectory)/Monolithic_Infra_Repository'
 
 # ---------------- TERRAFORM INIT / PLAN ----------------
 - stage: Build_Stage
